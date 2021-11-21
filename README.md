@@ -4,6 +4,8 @@
 
 ## Установка
 
+- Вводим в командной строке следующие команды:
+
 ```bash
     git clone https://github.com/glavvra4/telegram-astrology-bot
     cd ./telegram-astrology-bot
@@ -12,6 +14,7 @@
 
 - Открываете файл `.env-example` и изменяете значение `TELEGRAM_BOT_TOKEN` на токен, полученный у BotFather
 - Переименовываете файл `.env-example` в `.env`
+- Запускаем бота через командную строку:
 
 ```bash
     npm -start
