@@ -14,9 +14,10 @@
     "javascript"
   ],
   "author": "glavvra4",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "node-telegram-bot-api": "^0.54.0"
+    "node-telegram-bot-api": "^0.54.0",
+    "xmlhttprequest": "^1.8.0"
   }
 }

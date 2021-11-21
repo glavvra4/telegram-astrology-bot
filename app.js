@@ -3,9 +3,13 @@ require('dotenv').config()
 
 //  Инициализация модулей node
 const TelegramBot = require('node-telegram-bot-api');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-//  Инициализация объектов
+//  Инициализация объекта бота
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+
+//Инициализация объекта XMLHttpRequest
+const xhr = new XMLHttpRequest();
 
 //  Начало общения с ботом
 bot.onText(/\/start/, (msg) => {
@@ -31,6 +35,10 @@ bot.onText(/\/help/, (msg) => {
 Список доступных команд:
 
 /ping - проверка работоспособности бота.
+
+/cat - присылает случайную картинку котика.
+
+/dog - присылает случайную картинку пёсика.
     `;
 
     //  Отправляем ответное сообщение
@@ -48,4 +56,62 @@ bot.onText(/\/ping/, (msg) => {
 
     //  Отправляем ответное сообщение
     bot.sendMessage(chatId, resp);
+});
+
+//  Отправка случайной картинки котика
+bot.onText(/\/cat/, (msg) => {
+    // Обработчик изменения состояния готовности
+    xhr.onreadystatechange = function () {
+        //  Если получен ответ
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Извлекаем из JSON ответа ссылку на картинку с котиком
+            let src = JSON.parse(xhr.responseText).file;
+
+            //  Отправляем картинку в ответ
+            bot.sendPhoto(msg.chat.id, src, { caption: "Держи картинку котика :3" });
+        
+        //  Если ответ не получен
+        }else{
+            //  Ответное сообщение
+            const resp = `Сервер картинок с котиками недоступен(((`;
+
+            //  Отправляем ответное сообщение
+            bot.sendMessage(chatId, resp);
+        }
+    }
+
+    //  Инициализация нового XHR-запроса
+    xhr.open("GET", "https://aws.random.cat/meow");
+
+    //  Отправка XHR-запроса
+    xhr.send();
+});
+
+//  Отправка случайной картинки котика
+bot.onText(/\/dog/, (msg) => {
+    // Обработчик изменения состояния готовности
+    xhr.onreadystatechange = function () {
+        //  Если получен ответ
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Извлекаем из JSON ответа ссылку на картинку с пёсиком
+            let src = JSON.parse(xhr.responseText).message;
+
+            //  Отправляем картинку в ответ
+            bot.sendPhoto(msg.chat.id, src, { caption: "Держи картинку пёсика :3" });
+
+        //  Если ответ не получен
+        } else {
+            //  Ответное сообщение
+            const resp = `Сервер картинок с пёсиками недоступен(((`;
+
+            //  Отправляем ответное сообщение
+            bot.sendMessage(chatId, resp);
+        }
+    }
+
+    //  Инициализация нового XHR-запроса
+    xhr.open("GET", "https://dog.ceo/api/breeds/image/random");
+
+    //  Отправка XHR-запроса
+    xhr.send();
 });
