@@ -1,0 +1,22 @@
+{
+  "name": "telegram-bot",
+  "version": "0.1.0",
+  "description": "simple telegram bot",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "nodejs",
+    "js",
+    "javascript"
+  ],
+  "author": "glavvra4",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "node-telegram-bot-api": "^0.54.0"
+  }
+}
