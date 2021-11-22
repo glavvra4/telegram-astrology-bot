@@ -18,8 +18,7 @@ const xhr = new XMLHttpRequest();
 bot.onText(/\/start/, (msg) => {
     //  Получаем id чата
     const chatId = msg.chat.id;
-
-    console.log(msg);
+    
     //  Ответное сообщение
     const resp = `Привет, это тестовая модель бота. Отправь /help, чтобы узнать, что он может.`;
 
