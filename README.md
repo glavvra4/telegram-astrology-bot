@@ -25,7 +25,7 @@
 
 ```bash
     docker-compose up -d
-    npm -start
+    npm start
 ```
 
 - Готово, бот работает! 😎
