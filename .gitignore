@@ -1,5 +1,8 @@
 # Dependency directories
 node_modules/
 
+# Database data directories
+mongodb/
+
 # Main .env file
 .env
