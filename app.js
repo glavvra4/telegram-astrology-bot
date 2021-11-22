@@ -1,9 +1,12 @@
 //  Инициализация обработчика .env файла, содержащего настройки
 require('dotenv').config()
 
-//  Инициализация модулей node
+//  Инициализация модулей Node
 const TelegramBot = require('node-telegram-bot-api');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+// Инициализация пользовательских моделей
+const db = require('./models/db');
 
 //  Инициализация объекта бота
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
@@ -15,7 +18,7 @@ const xhr = new XMLHttpRequest();
 bot.onText(/\/start/, (msg) => {
     //  Получаем id чата
     const chatId = msg.chat.id;
-
+    
     //  Ответное сообщение
     const resp = `Привет, это тестовая модель бота. Отправь /help, чтобы узнать, что он может.`;
 

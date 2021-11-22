@@ -1,8 +1,8 @@
-# Директория пакетов Node
+# Dependency directories
 node_modules/
 
-# Основной .env файл
-.env
+# Database data directories
+mongodb/
 
-# Директория базы данных
-mongodb/database/
+# Main .env file
+.env
