@@ -6,7 +6,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 // Инициализация пользовательских моделей
-const db = require('./models/db');
+const User = require('./models/User.js');
 
 //  Инициализация объекта бота
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
@@ -18,7 +18,11 @@ const xhr = new XMLHttpRequest();
 bot.onText(/\/start/, (msg) => {
     //  Получаем id чата
     const chatId = msg.chat.id;
-    
+
+    //  Получаем данные пользователя из бд, если они есть,
+    //  либо создаем новый документ со значениями по умолчанию
+    let user = new User(chatId);
+
     //  Ответное сообщение
     const resp = `Привет, это тестовая модель бота. Отправь /help, чтобы узнать, что он может.`;
 
@@ -30,6 +34,10 @@ bot.onText(/\/start/, (msg) => {
 bot.onText(/\/help/, (msg) => {
     //  Получаем id чата
     const chatId = msg.chat.id;
+
+    //  Получаем данные пользователя из бд, если они есть,
+    //  либо создаем новый документ со значениями по умолчанию
+    let user = new User(chatId);
 
     //  Ответное сообщение
     const resp = `
@@ -54,6 +62,10 @@ bot.onText(/\/ping/, (msg) => {
     //  Получаем id чата
     const chatId = msg.chat.id;
 
+    //  Получаем данные пользователя из бд, если они есть,
+    //  либо создаем новый документ со значениями по умолчанию
+    let user = new User(chatId);
+
     //  Ответное сообщение
     const resp = 'pong';
 
@@ -63,6 +75,13 @@ bot.onText(/\/ping/, (msg) => {
 
 //  Отправка случайной картинки котика
 bot.onText(/\/cat/, (msg) => {
+    //  Получаем id чата
+    const chatId = msg.chat.id;
+
+    //  Получаем данные пользователя из бд, если они есть,
+    //  либо создаем новый документ со значениями по умолчанию
+    let user = new User(chatId);
+
     // Обработчик изменения состояния готовности
     xhr.onreadystatechange = function () {
         //  Если получен ответ
@@ -71,7 +90,7 @@ bot.onText(/\/cat/, (msg) => {
             let src = JSON.parse(xhr.responseText).file;
 
             //  Отправляем картинку в ответ
-            bot.sendPhoto(msg.chat.id, src, { caption: "Держи картинку котика :3" });
+            bot.sendPhoto(chatId, src, { caption: "Держи картинку котика :3" });
         }
     }
 
@@ -84,6 +103,13 @@ bot.onText(/\/cat/, (msg) => {
 
 //  Отправка случайной картинки котика
 bot.onText(/\/dog/, (msg) => {
+    //  Получаем id чата
+    const chatId = msg.chat.id;
+
+    //  Получаем данные пользователя из бд, если они есть,
+    //  либо создаем новый документ со значениями по умолчанию
+    let user = new User(chatId);
+
     // Обработчик изменения состояния готовности
     xhr.onreadystatechange = function () {
         //  Если получен ответ
@@ -92,7 +118,7 @@ bot.onText(/\/dog/, (msg) => {
             let src = JSON.parse(xhr.responseText).message;
 
             //  Отправляем картинку в ответ
-            bot.sendPhoto(msg.chat.id, src, { caption: "Держи картинку пёсика :3" });
+            bot.sendPhoto(chatId, src, { caption: "Держи картинку пёсика :3" });
         }
     }
 
@@ -101,4 +127,20 @@ bot.onText(/\/dog/, (msg) => {
 
     //  Отправка XHR-запроса
     xhr.send();
+});
+
+bot.onText(/\/myid/, (msg) => {
+    //  Получаем id чата
+    const chatId = msg.chat.id;
+
+    //  Получаем данные пользователя из бд, если они есть,
+    //  либо создаем новый документ со значениями по умолчанию
+    let user = new User(chatId);
+    user.auth(function(){
+        //  Ответное сообщение
+        const resp = `Твой chat id: ${user.telegramId}`;
+
+        //  Отправляем ответное сообщение
+        bot.sendMessage(chatId, resp);
+    });
 });
