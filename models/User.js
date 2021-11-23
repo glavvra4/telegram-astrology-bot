@@ -12,12 +12,13 @@ module.exports = class User {
      * Метод инициализации объекта пользователя. Ищет в базе данных
      * документ по идентификатору Telegram. Если не находит - создает 
      * документ с параметрами по умолчанию, если находит - пропускает 
-     * данный шаг. Записывает все полученные или созданные данные
-     * присваивает классу и вызвыает классу 
+     * данный шаг. Записывает все полученные или созданные данные, затем
+     * присваивает их классу и вызывает callback 
+     * 
+     * @param {Function} callback
      */
     init(callback){
-        let telegramId = this._telegramId;
-
+        const telegramId = this._telegramId;
         //  Создание промиса транзакции для бд
         let transaction = new Promise((resolve, reject)=>{
             //  Поиск пользователя по telegramId
@@ -39,12 +40,7 @@ module.exports = class User {
                         }
         
                         //  Создаем объект сущности
-                        const user = new UserEntity({
-                            telegramId: data.telegramId,
-                            role: data.role,
-                            command: data.command,
-                            zodiacSign: data.zodiacSign
-                        });
+                        const user = new UserEntity(data);
         
                         //  Сохраняем данные в БД
                         user.save(function(err){
@@ -87,7 +83,7 @@ module.exports = class User {
 
     set role(newRole){
         this._role = newRole
-        User.updateOne({ telegramId: this._telegramId }, { role: newRole }, function(err, result){
+        UserEntity.updateOne({ telegramId: this._telegramId }, { role: newRole }, function(err, result){
             if(err){
                 console.error("Ошибка транзакции: " + reason);
             }
@@ -100,7 +96,7 @@ module.exports = class User {
 
     set command(newCommand){
         this._command = newCommand
-        User.updateOne({ telegramId: this._telegramId }, { command: newCommand }, function(err, result){
+        UserEntity.updateOne({ telegramId: this._telegramId }, { command: newCommand }, function(err, result){
             if(err){
                 console.errror("Ошибка транзакции: " + err );
             }
@@ -113,11 +109,9 @@ module.exports = class User {
 
     set zodiacSign(newZodiacSign){
         this._zodiacSign = newZodiacSign
-        User.updateOne({ telegramId: this._telegramId }, { zodiacSign: newZodiacSign }, function(err, result){
+        UserEntity.updateOne({ telegramId: this._telegramId }, { zodiacSign: newZodiacSign }, function(err, result){
             if(err){
                 console.error("Ошибка транзакции: " + err);
-            }else{
-                resolve(result);
             }
         });
     }

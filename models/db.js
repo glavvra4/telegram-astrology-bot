@@ -64,4 +64,7 @@ mongoose.connect(
         useUnifiedTopology: true, 
         useNewUrlParser: true
     }
+).then(
+    () => { console.log("Подключение к MongoDB прошло успешно") },
+    err => { console.error("Ошибка подключения: " + err) }
 );

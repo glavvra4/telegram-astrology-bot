@@ -5,15 +5,38 @@ require('dotenv').config()
 const TelegramBot = require('node-telegram-bot-api');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-// Инициализация пользовательских моделей
-const User = require('./models/User.js');
+//  Инициализация пользовательских моделей
+
+const MessageHandler = require('./models/MessageHandler')
 
 //  Инициализация объекта бота
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
-//Инициализация объекта XMLHttpRequest
+//  Инициализация объекта XMLHttpRequest
 const xhr = new XMLHttpRequest();
 
+//  Инициализация объекта обработчика сообщений
+const mh = new MessageHandler();
+
+bot.on("message", (msg) => {
+    mh.handleMessage(msg, function(data){
+        if("response" in data){
+            const telegramId = msg.chat.id
+            const options = ("options" in data.response)? data.response.options : {};
+            switch(data.response.type){
+                case "text":
+                    bot.sendMessage(telegramId, data.response.text, options);
+                    break;
+                case "picture":
+                    bot.sendPhoto(telegramId, data.response.picture.src, options);
+                    break;
+            }
+        }
+    });
+});
+
+
+/*
 //  Начало общения с ботом
 bot.onText(/\/start/, (msg) => {
     //  Получаем id чата
@@ -136,7 +159,7 @@ bot.onText(/\/myid/, (msg) => {
     //  Получаем данные пользователя из бд, если они есть,
     //  либо создаем новый документ со значениями по умолчанию
     let user = new User(chatId);
-    user.auth(function(){
+    user.init(function(){
         //  Ответное сообщение
         const resp = `Твой chat id: ${user.telegramId}`;
 
@@ -144,3 +167,4 @@ bot.onText(/\/myid/, (msg) => {
         bot.sendMessage(chatId, resp);
     });
 });
+*/
