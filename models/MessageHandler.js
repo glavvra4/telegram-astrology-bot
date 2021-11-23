@@ -1,4 +1,5 @@
 const User = require('./User');
+const API = require('./API');
 
 module.exports = class MessageHandler {
     constructor(){}
@@ -6,7 +7,7 @@ module.exports = class MessageHandler {
     handleMessage(message, callback){
         let telegramId = message.chat.id;
         let user = new User(telegramId);
-        user.init(()=>{
+        user.init(async ()=>{
             let data;
             if("text" in message){
                 if(this.isCommand(message.text)){
@@ -49,6 +50,28 @@ module.exports = class MessageHandler {
                                 response:{
                                     type: "text",
                                     text: "pong"
+                                }
+                            }
+                            break;
+                        case "/cat":
+                            data = {
+                                response:{
+                                    type: "picture",
+                                    src: await API.getRandomCatPicture(),
+                                    options:{
+                                        caption: "Держи картинку котика :3"
+                                    }
+                                }
+                            }
+                            break;
+                        case "/dog":
+                            data = {
+                                response:{
+                                    type: "picture",
+                                    src: await API.getRandomDogPicture(),
+                                    options:{
+                                        caption: "Держи картинку пёсика :3"
+                                    }
                                 }
                             }
                             break;

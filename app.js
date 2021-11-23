@@ -3,7 +3,6 @@ require('dotenv').config()
 
 //  Инициализация модулей Node
 const TelegramBot = require('node-telegram-bot-api');
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 //  Инициализация пользовательских моделей
 
@@ -11,9 +10,6 @@ const MessageHandler = require('./models/MessageHandler')
 
 //  Инициализация объекта бота
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
-
-//  Инициализация объекта XMLHttpRequest
-const xhr = new XMLHttpRequest();
 
 //  Инициализация объекта обработчика сообщений
 const mh = new MessageHandler();
@@ -28,7 +24,7 @@ bot.on("message", (msg) => {
                     bot.sendMessage(telegramId, data.response.text, options);
                     break;
                 case "picture":
-                    bot.sendPhoto(telegramId, data.response.picture.src, options);
+                    bot.sendPhoto(telegramId, data.response.src, options);
                     break;
             }
         }
