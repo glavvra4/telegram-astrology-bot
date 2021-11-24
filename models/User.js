@@ -3,7 +3,10 @@ const UserEntity = require("./db").User;
 
 // Класс пользователя
 module.exports = class User {
-    //  Конструктор класса, 
+    
+    /**
+     * @param {number} telegramId Идентификатор пользователя в Telegram
+     */
     constructor(telegramId){
         this._telegramId = telegramId;   
     }
@@ -33,7 +36,7 @@ module.exports = class User {
                             telegramId: telegramId,
                             role: "current",
                             command: {
-                                name: "/start",
+                                name: "none",
                                 data: {}
                             },
                             zodiacSign: "unknown"
@@ -69,10 +72,8 @@ module.exports = class User {
        
     }
 
-    /**
-     *  Геттеры и сеттеры
-     */    
-
+    //Геттеры и сеттеры
+  
     get telegramId(){
         return this._telegramId;
     }
