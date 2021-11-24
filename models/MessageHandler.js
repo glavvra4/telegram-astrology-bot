@@ -9,11 +9,12 @@ const TextCommandHandler = require('./TextCommandHandler');
  * Класс обработчика сообщений
  */
 module.exports = class MessageHandler {
-    
+
     constructor(){}
 
     /**
-     * Данный метод обрабатывает
+     * Данный метод обрабатывает сообщение и вызывает колбэк, отправляя параметром объект
+     * ответного сообщения 
      * @param {Object} message Объект Telegram-сообщения
      * @param {Function} callback Функция, вызываемая по завершении выполнения метода
      */

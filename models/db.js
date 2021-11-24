@@ -54,7 +54,15 @@ const forecastEntityScheme = new Schema(
 );
 
 //Экспорт моделей базы данных
+
+/**
+ * Сущность пользователя
+ */
 module.exports.User = mongoose.model("User", userEntityScheme);
+
+/**
+ * Сущность астрологического прогноза
+ */
 module.exports.Forecast = mongoose.model("Forecast", forecastEntityScheme);
 
 //  Подключение к MongoDB
